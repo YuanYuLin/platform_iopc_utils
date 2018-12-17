@@ -7,6 +7,7 @@ arch = ""
 output_platform_dir = ""
 src_image_cfg = ""
 dao_script = "dao.py"
+daosfs_script = "daosfs.py"
 
 def set_global(args):
     global pkg_path
@@ -31,6 +32,7 @@ def MAIN_EXTRACT(args):
 
     ops.mkdir(output_platform_dir)
     ops.copyto(ops.path_join(pkg_path, dao_script), output_platform_dir)
+    ops.copyto(ops.path_join(pkg_path, daosfs_script), output_platform_dir)
 
     return True
 
@@ -56,6 +58,10 @@ def MAIN_BUILD(args):
 def MAIN_INSTALL(args):
     set_global(args)
 
+    return False
+
+def MAIN_SDKENV(args):
+    set_global(args)
     return False
 
 def MAIN_CLEAN_BUILD(args):

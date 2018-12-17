@@ -50,10 +50,10 @@ def dao_to_buffer(dao, buff, record_format, data_size):
 
     return buff
 
-def out_to_binary(buff):
+def out_to_binary(buff, dao_bin_path):
     #create_buffer(1, (64 * 1024))
     #struct.pack("12sH50s", "$[IOPC_DATA]", record_count, bytearray('\0' * 50))
-    fd=open('db_init.bin', 'wb')
+    fd=open(dao_bin_path, 'wb')
     for rec in buff:
         fd.write(rec)
     fd.close()
@@ -140,14 +140,15 @@ def create_header(layout_obj):
     return header
 
 def help():
-    print "usage: dao.py <dao.ini>"
+    print "usage: dao.py <dao.ini> <dao.bin>"
     sys.exit(1)
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 3:
         help()
     dao={}
     cfg_ini = sys.argv[1]
+    dao_bin_path = sys.argv[2]
     config = ConfigParser.RawConfigParser()
     config.read(cfg_ini)
     single_section = config.items("CFG_DAO")
@@ -165,13 +166,15 @@ if __name__ == '__main__':
 
     buf=create_buffer(record_count, record_size)
     buf=dao_to_buffer(dao, buf, record_format, data_size)
-    out_to_binary(buf)
+    out_to_binary(buf, dao_bin_path)
     out_to_c(buf, record_count, record_format)
 
     layout = config.get('CFG_IMAGE', 'layout')
     layout_obj  = json.loads(layout)
+    '''
     header_bin = create_header(layout_obj)
-    fd=open('img_header.bin', 'wb')
+    hdr_path = dao_bin_path + ".hdr"
+    fd=open(hdr_path, 'wb')
     fd.write(header_bin)
     fd.close()
-
+    '''
