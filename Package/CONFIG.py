@@ -8,6 +8,7 @@ output_platform_dir = ""
 src_image_cfg = ""
 dao_script = "dao.py"
 daosfs_script = "daosfs.py"
+header_script = "head_writer.py"
 
 def set_global(args):
     global pkg_path
@@ -33,6 +34,7 @@ def MAIN_EXTRACT(args):
     ops.mkdir(output_platform_dir)
     ops.copyto(ops.path_join(pkg_path, dao_script), output_platform_dir)
     ops.copyto(ops.path_join(pkg_path, daosfs_script), output_platform_dir)
+    ops.copyto(ops.path_join(pkg_path, header_script), output_platform_dir)
 
     return True
 
